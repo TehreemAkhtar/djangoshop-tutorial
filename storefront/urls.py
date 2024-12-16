@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
-# from playground import urls
+
+admin.site.site_header = 'Storefront Administration'
+admin.site.index_title = 'Admin'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('playground/', include('playground.urls')),
+    path('store/', include('store.urls')),
 ] + debug_toolbar_urls()
