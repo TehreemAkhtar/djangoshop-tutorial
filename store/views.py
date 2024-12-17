@@ -23,16 +23,11 @@ class ProductViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CollectionList(ListCreateAPIView):
+class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.prefetch_related('products').all()
     serializer_class = CollectionSerializer
 
-
-class CollectionDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Collection.objects.prefetch_related('products').all()
-    serializer_class = CollectionSerializer
-
-    def delete(self, request, pk):
+    def destroy(self, request, pk):
         collection = get_object_or_404(Collection, pk=pk)
         if collection.products.count() > 0:
             return Response({'error': 'Collection cannot be deleted because it is associated with a product'},
