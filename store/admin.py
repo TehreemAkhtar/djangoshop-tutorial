@@ -20,7 +20,13 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__lt=10)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = models.ProductImage
+    readonly_fields = ['thumbnail']
 
+    def thumbnail(self, obj):
+        if obj.image is not None:
+            return format_html(f"<img src='{obj.image.url}' class='thumbnail'>/>")
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -33,6 +39,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['collection', 'last_update', InventoryFilter]
     list_per_page = 10
     list_select_related = ['collection']
+    inlines = [ProductImageInline]
 
     def collection_title(self, product):
         return product.collection.title
@@ -52,14 +59,21 @@ class ProductAdmin(admin.ModelAdmin):
             messages.SUCCESS
         )
 
+    class Media:
+        css = {
+            'all': ['store/styles.css']
+        }
+
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
+    autocomplete_fields = ('user',)
     list_display = ('first_name', 'last_name', 'membership', 'order_count')
     list_editable = ['membership']
     list_per_page = 10
-    ordering = ['first_name', 'last_name']
-    search_fields = ['first_name__istartswith', 'last_name__istartswith']
+    list_select_related = ['user']
+    ordering = ['user__first_name', 'user__last_name']
+    search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(order_count=Count('order'))

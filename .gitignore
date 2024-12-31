@@ -9,3 +9,6 @@
 /dataSources.xml
 /.idea/
 .idea/
+/media/
+/static/
+general.log

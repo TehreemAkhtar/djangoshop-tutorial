@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class StoreConfig(AppConfig):
+class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'store'
+    name = 'core'
 
     def ready(self):
-        import store.signals.handlers
+        import core.signals.handlers

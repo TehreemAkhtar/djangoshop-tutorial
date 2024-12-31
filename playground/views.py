@@ -1,10 +1,23 @@
-from django.db.models import Count, Sum, Min, Max, Avg, F
+import requests
 from django.shortcuts import render
-from django.http import HttpResponse, request
-from store.models import Product, Customer, Collection, Order, OrderItem, Cart, CartItem
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from rest_framework.views import APIView
+import logging
 
 
-def say_hello(request):
+logger = logging.getLogger(__name__)
 
 
-    return render(request, 'hello.html')
+class HelloView(APIView):
+    def get(self, request):
+        try:
+            logger.info("Calling httpbin")
+            response = requests.get('https://httpbin.org/delay/2')
+            logger.info("Received httpbin")
+        except requests.ConnectionError:
+            logger.critical("Connection error")
+        return render(request, 'hello.html', context={'result': response.json()})
+
+

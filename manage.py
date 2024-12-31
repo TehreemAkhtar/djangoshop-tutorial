@@ -8,7 +8,7 @@ import pymysql
 def main():
     """Run administrative tasks."""
     pymysql.install_as_MySQLdb()
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'storefront.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'storefront.settings.dev')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
