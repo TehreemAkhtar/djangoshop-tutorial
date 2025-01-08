@@ -2,7 +2,6 @@ from .common import *
 
 
 DEBUG = True
-SECRET_KEY = 'django-insecure-jb^7mq5ox5e6^u!-=ppu#$3+eb&+qw54ps--seotfit7zikatv'
 
 
 # Database
@@ -12,7 +11,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'storefront3',
+        'HOST': 'mysql',
         'USER': 'root',
         'PASSWORD': 'root_123',
     }
+}
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: True,
 }
